@@ -6,10 +6,11 @@ import { AboutModule } from './about/about.module';
 
 
 const routes: Routes = [
-  {path:'home', loadChildren: () => import('./home/home.module').then(M => M.HomeModule)},
-  {path:'quizCatalogue', loadChildren: () => import('./quiz-catalogue/quiz-catalogue.module').then(M => M.QuizCatalogueModule)},
-  {path:'about', loadChildren: () => import('./about/about.module').then(M => M.AboutModule)},
-  {path:'**', loadChildren: () => import('./home/home.module').then(M => M.HomeModule)}
+  {path:'',redirectTo:'/home',pathMatch:'full'},
+  {path:'home', loadChildren: './home/home.module#HomeModule'},
+  {path:'quizCatalogue', loadChildren: './quiz-catalogue/quiz-catalogue.module#QuizCatalogueModule'},
+  {path:'about', loadChildren: './about/about.module#AboutModule'}
+  //{path:'**', loadChildren: () => import('./home/home.module').then(M => M.HomeModule)}
 ];
 
 @NgModule({

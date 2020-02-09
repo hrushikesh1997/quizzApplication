@@ -1,0 +1,94 @@
+<div class="card row">
+  <div class="card-header text-center col-md-12">
+    <h3>Create Quiz</h3>
+  </div>
+  <div class="card-body col-md-6 mx-auto">
+    <form [formGroup]="createQuizForm">
+      <div class="form-group">
+        <label for="formGroupExampleInput">Quiz Name</label>
+        <input type="text" class="form-control" formControlName="quizName" id="formGroupExampleInput"
+          placeholder="Enter quiz name...">
+        <div class="invalid-feedback">
+          This field is mandatory.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Description</label>
+        <textarea class="form-control rounded-0" formControlName="quizDescription" id="exampleFormControlTextarea2"
+          rows="3" placeholder="A short description about the quiz."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="disabledTextInput">Author</label>
+        <input type="text" id="disabledTextInput" formControlName="author" class="form-control" [value]="authorName"
+          readonly>
+      </div>
+    </form>
+    <h6>
+      <i class="card-text text-center text-warning">This quiz will be visible to public, i.e. any user can see/appear
+        for this quiz.</i>
+    </h6>
+    <hr>
+    <div class="text-center add-question-button">
+      <button type="button" class="btn btn-outline-secondary add-button" (click)="showAddQuestion()">+
+      </button><span class="container-fluid">Add Question</span>
+    </div>
+    <form [formGroup]="addQuestionForm" *ngIf="showQuestionForm">
+      <hr>
+      <div class="form-group row">
+        <label for="question" class="col-sm-2 col-form-label">Question</label>
+        <div class="col-sm-10">
+          <textarea class="form-control rounded-0" formControlName="questionText" id="question" rows="3"
+            placeholder="Type your question here..."></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="options" class="col-md-2 col-form-label mt-3">Add Option</label>
+        <div class="col-md-7 mt-3">
+          <input type="text" #option class="form-control" id="options">
+        </div>
+        <div class="col-md-3 mt-3 container-fluid text-center">
+          <button type="submit" class="btn btn-secondary" (click)="addOption(option.value)">Add Option</button>
+        </div>
+      </div>
+      <fieldset class="form-group">
+        <div class="row">
+          <legend class="col-form-label col-sm-12 pt-0 text-center" *ngIf="options.length > 0">Select Correct Option
+          </legend>
+          <div class="col-sm-10" *ngFor="let opt of options; let i = index">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" [value]="opt" (click)="answerSelected(i)">
+              <label class="form-check-label" for="gridRadios1">{{opt}}
+              </label>
+              <span class="ml-2">
+                <button type="button" class="btn btn-outline-danger btn-xs delete-button" (click)="deleteOption(i)">X
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div class="form-group row">
+        <div class="add-question-button col-md-10 text-center container-fluid">
+          <button type="submit" class="btn btn-secondary btn-md" (click)="addQuestion()" [disabled]="addQuestionForm.get('questionText').invalid || options.length < 1 ||  answerOption < 0">Add Question</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <div *ngIf="questionList.length > 0">
+      <h6>Questions</h6>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let question of questionList; let qi = index">Q{{qi+1}}.
+          {{question.questionText}}<span class="float-right">
+            <button class="btn btn-danger" (click)="deleteQuestion(qi)">Delete</button>
+          </span></li>
+      </ul>
+      <hr>
+    </div>
+    <div class="col-md-10 text-center container-fluid">
+      <button type="submit" class="btn btn-secondary btn-md" (click)="createQuiz()"
+        [disabled]="createQuizForm.invalid || questionList.length <=0 ">Create Quiz</button>
+    </div>
+  </div>
+  <div class="card-footer text-muted text-center col-md-12">Quizes help us bringing everyone to the same page because,
+    Knowldge!=Understanding</div>
+</div>

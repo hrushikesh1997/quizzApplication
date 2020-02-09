@@ -1,0 +1,66 @@
+<div class="card row" *ngIf="quiz && questions && !quizCompleteFlag">
+    <div class="card-header text-center col-md-12">
+        <h3>{{quiz?.quizName}}</h3>
+    </div>
+    <div *ngIf="!startQuizFlag">
+        <div class=" text-center card-body col-md-6 mx-auto">
+            Number of Questions: {{questions?.length}}
+            <div style="margin-top: 20px;">
+                Minimum Qulifying Percentage : <strong>60%</strong>
+            </div>
+        </div>
+        <div class="col-md-10 text-center card-body container-fluid">
+            <button type="submit" class="btn btn-success btn-md" (click)="startQuiz()">Start Quiz</button>
+        </div>
+    </div>
+    <div *ngIf="startQuizFlag" class="container-fluid col-md-5">
+        <div class=" text-center card-body mx-auto">
+           <div class="pull-left"><strong> Question: </strong> {{questions[currentIndex].questionText}}</div>
+        </div>
+        <div class="col-md-6">
+            <fieldset class="form-group">
+                <div *ngFor="let opt of questions[currentIndex].options; let i = index">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios" [value]="opt" (click)="answerSelected(i)" [checked]="optionSelected == i">
+                    <label class="form-check-label" for="gridRadios1">{{opt}}
+                    </label>
+                </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row  text-center">
+            <div class="col-sm-10 text-center card-body container-fluid mx-auto">
+                <button type="submit" [disabled]="currentIndex <= 0" class="btn btn-secondary btn-md" (click)="goPrev()"><< Prev.</button>
+                <button type="submit" [disabled]="optionSelected < 0" class="btn btn-dark btn-md" (click)="submit()">{{submitText}}</button>
+                <button type="submit" [disabled]="currentIndex == questions.length-1" class="btn btn-secondary btn-md" (click)="goNext()">Next >></button>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted text-center col-md-12">Published By: {{quiz?.author}}</div>
+</div>
+<div  *ngIf="!quiz || !questions">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-grow" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+<div  *ngIf="quizCompleteFlag">
+    <div class="card-header text-center col-md-12">
+        <h3>Result</h3>
+    </div>
+    <div class=" text-center card-body col-md-6 mx-auto">
+        Number of Questions: {{questions?.length}}
+        <div style="margin-top: 20px;">
+            Score :
+            <strong *ngIf="score>60.0" class="text-success">{{score}}%</strong>
+            <strong *ngIf="score<60.0" class="text-danger">{{score}}%</strong>
+        </div>
+    </div>
+    <div class="row  text-center">
+        <div class="col-sm-10 text-center card-body container-fluid mx-auto">
+            <button type="submit"  class="btn btn-dark btn-md" (click)="goHome()">Explore Other Quizes</button>
+        </div>
+    </div>
+    <div class="card-footer text-muted text-center col-md-12">Published By: {{quiz?.author}}</div>
+</div>
